@@ -76,7 +76,8 @@ const completeTodo = async(req, res) => {
   try {
     let data = req.body;
 
-    let updatedResponse =  await TodoModel.findByIdAndUpdate(clientId,{...data},{new:true});
+
+    let updatedResponse =  await TodoModel.findByIdAndUpdate(data.id,{ $set: { completed: !completed } },{new:true});
 
     res.status(200).json({
         status:true,
