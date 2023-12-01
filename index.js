@@ -12,30 +12,28 @@ let port = process.env.PORT;
 const allowedOrigins = [process.env.FRONTEND_URL];
 
 const corsOptions = {
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-  };
-  app.use(cors(corsOptions));
+  origin: function (origin, callback) {
+    console.log('origin',origin)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+app.use(cors(corsOptions));
 
 connectToMongo();
 
+app.get("/", (req, res) => {
+  res.status(200).send("Hi from server");
+});
 
-app.get('/',(req,res)=>{
-    res.status(200).send("Hi from server")
-})
-
-app.get('/connect-to-server',(req,res)=>{
-    res.status(200).send("Connected to server")
-})
+app.get("/connect-to-server", (req, res) => {
+  res.status(200).send("Connected to server");
+});
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
-
-
 
 app.listen(port, () => console.log(`Server listening at port ${port}`));
