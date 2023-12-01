@@ -11,7 +11,7 @@ const connectToMongo = require("./db");
 let port = process.env.PORT;
 const allowedOrigins = [process.env.FRONTEND_URL];
 
-
+// this can be used handle cors for specific url
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -21,7 +21,7 @@ const corsOptions = {
     }
   },
 };
-app.use(cors(corsOptions));
+app.use(cors());
 
 connectToMongo();
 
