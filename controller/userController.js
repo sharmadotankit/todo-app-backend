@@ -4,10 +4,10 @@ const TodoModel = require("../Models/Todos");
 const addTodo = async(req, res) => {
   try {
     let data = req.body;
-    console.log(data);
-    return;
 
-    let updatedResponse =  await TodoModel.findByIdAndUpdate(clientId,{...data},{new:true});
+    let updatedResponse =  await TodoModel.create(data);
+
+    
 
     res.status(200).json({
         status:true,
@@ -30,14 +30,12 @@ const addTodo = async(req, res) => {
 const editTodo = async(req, res) => {
   try {
     let data = req.body;
-
-    let updatedResponse =  await TodoModel.findByIdAndUpdate(clientId,{...data},{new:true});
-
+    let updatedResponse =  await TodoModel.findByIdAndUpdate(data.id,{$set:{text:data.newText}},{new:true});
     res.status(200).json({
         status:true,
         statusCode:200,
         data:updatedResponse,
-        message:"Todo created successfully",
+        message:"Todo edited successfully",
     })
   } catch (err) {
     console.log("err",err)
@@ -53,15 +51,14 @@ const editTodo = async(req, res) => {
 
 const deleteTodo = async(req, res) => {
   try {
-    let data = req.body;
-
-    let updatedResponse =  await TodoModel.findByIdAndUpdate(clientId,{...data},{new:true});
+    let data = req.params;
+    let updatedResponse =  await TodoModel.findByIdAndDelete(data.id);
 
     res.status(200).json({
         status:true,
         statusCode:200,
         data:updatedResponse,
-        message:"Todo created successfully",
+        message:"Todo deleted successfully",
     })
   } catch (err) {
     console.log("err",err)
@@ -99,10 +96,35 @@ const completeTodo = async(req, res) => {
   }
 };
 
+const fetchTodoForUser = async(req, res) => {
+  try {
+    let data = req.params;
+
+    let updatedResponse =  await TodoModel.find({userId:data.id});
+
+    res.status(200).json({
+        status:true,
+        statusCode:200,
+        data:updatedResponse,
+        message:"Todo fetched successfully",
+    })
+  } catch (err) {
+    console.log("err",err)
+    res.status(400).json({
+      status:false,
+      statusCode:400,
+      message:"Something went wrong while fetching todo",
+      error:err,
+  })
+
+  }
+};
+
 module.exports={
   addTodo,
   editTodo,
   deleteTodo,
   completeTodo,
+  fetchTodoForUser,
 }
 
