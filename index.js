@@ -11,11 +11,9 @@ const connectToMongo = require("./db");
 let port = process.env.PORT;
 const allowedOrigins = [process.env.FRONTEND_URL];
 
-console.log("sdafsdf",allowedOrigins)
 
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log('origin',origin)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
